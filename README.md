@@ -10,20 +10,13 @@ Usage:
 
 To install:
 <pre>
-  include mcollective
+  class { 'mcollective':
+    stomp_host      => 'stomp',
+    stomp_user      => 'mcollective',
+    stomp_password  => 'mcollective',
+    psk             => 'mySecretPSK'
+  }
 </pre>
-
-Hiera configuration:
-<pre>
-  mcollective::stomp_host - Stomp host
-  mcollective::stomp_user - Stomp username
-  mcollective::stomp_pass - Stomp password
-  mcollective::stomp_port - Stomp port (Default: 61613)
-  mcollective::psk - Pre-shared key
-  mcollective::client - Install client packages? (Default: no)
-  mcollective::enabled - Enabled? (Default: True)
-</pre>
-
 
 Contribute:
 -----------
