@@ -1,2 +1,6 @@
+v1.2.0:
+  Remove params class
+  Move to parameterized class
+  Rename templates to .erb
 v1.1.4:
   Initial public release
