@@ -1,14 +1,41 @@
-# Class: mcollective
+# == Class: mcollective
 #
-# This module manages mcollective
+# This module manages the mcollective package, service, and configs
 #
-# Actions:
 #
-# Requires:
+# === Parameters
 #
-# Sample Usage:
+# [*stomp_host*]
+#   Name of the stomp server
 #
-#   class {'mcollective': }
+# [*stmop_user*]
+#   Username to connect to the stomp server with
+#
+# [*stomp_password*]
+#   Password to connect to the stomp server
+#
+# [*psk*]
+#   Pre-shared key
+#
+# [*client*]
+#   Install the client?
+#
+# [*enabled*]
+#   Enable the mcollective service?
+#
+# [*client_logfile*]
+#   Where to write the client logs
+#
+# [*configfile_client*]
+#   Where is the client config file
+#
+# [*libdir*]
+#   The mcollective libdir
+#
+#
+# === Authors
+#
+# * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
 class mcollective(
   $stomp_host,
