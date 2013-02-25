@@ -5,8 +5,7 @@
 # Sample Usage:
 #   include mcollective::client
 #
-class mcollective::client inherits mcollective::server {
-  require mcollective::params
+class mcollective::client {
 
   package { 'mcollective-client':
     ensure => 'latest',
@@ -18,10 +17,10 @@ class mcollective::client inherits mcollective::server {
     owner   => root,
     group   => admin,
     require => Package['mcollective-client'],
-    content => template('mcollective/client/client.cfg'),
+    content => template('mcollective/client/client.cfg.erb'),
   }
 
-  file { $mcollective::params::client_logfile:
+  file { $mcollective::client_logfile:
     owner => root,
     group => admin,
     mode  => '0660',
@@ -35,7 +34,7 @@ class mcollective::client inherits mcollective::server {
 
   # Logrotate for mcollective client logs
   logrotate::file { 'mcollective-client':
-    log     => $mcollective::params::client_logfile,
+    log     => $mcollective::client_logfile,
     options => ['missingok', 'notifempty', 'create 0660 root admin', 'sharedscripts', 'weekly'];
   }
 

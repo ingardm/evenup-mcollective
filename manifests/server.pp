@@ -8,18 +8,7 @@
 # Sample Usage:
 #   include mcollective::server
 #
-# Some example mcollective runs
-# mco rpc filemgr status file=/etc/puppet/puppet.conf
-# mc-pgrep -F lsbmajdistrelease=5 ntp
-# mc-puppetd -F ipaddress_eth1=/10.182/ status
-# mc-puppetd summary -I hostname.yourdomain.com
-# mc-service -C apache httpd status
-# mc-puppetd runall 3
-# mc-service httpd status
-# mco facts lsbdistrelease -v
-# mc-nrpe -W lsbdistrelease=5.7 check_load
-#
-class mcollective::server($enabled = true) inherits mcollective {
+class mcollective::server($enabled = true) {
 
   case $enabled {
     true:     {
@@ -49,7 +38,7 @@ class mcollective::server($enabled = true) inherits mcollective {
       owner   => 'root',
       group   => 'root',
       require => Package['mcollective'],
-      content => template('mcollective/server/server.cfg');
+      content => template('mcollective/server/server.cfg.erb');
   }
 
   service {
@@ -57,7 +46,7 @@ class mcollective::server($enabled = true) inherits mcollective {
       ensure     => $running,
       enable     => $enabled,
       require    => Package['mcollective'],
-      subscribe  => File['/etc/mcollective/server.cfg'];
+      subscribe  => File['/etc/mcollective/server.cfg.erb'];
   }
 
   package {
@@ -69,14 +58,14 @@ class mcollective::server($enabled = true) inherits mcollective {
   }
 
   # Make sure the provisioner agent is removed
-  file { "${mcollective::params::libdir}/mcollective/agent/provision.rb": ensure => 'absent', notify => Service['mcollective'] }
+  file { "${mcollective::libdir}/mcollective/agent/provision.rb": ensure => 'absent', notify => Service['mcollective'] }
 
   file {
     '/etc/mcollective/facts.yaml':
       owner     => 'root',
       group     => 'root',
       mode      => '0400',
-      content   => template('mcollective/server/facts.yaml'),
+      content   => template('mcollective/server/facts.yaml.erb'),
       require   => Package['mcollective'];
   }
 
