@@ -10,21 +10,24 @@
 #
 #   class {'mcollective': }
 #
-class mcollective inherits mcollective::params {
+class mcollective(
+  $stomp_host,
+  $stomp_user,
+  $stomp_password,
+  $psk,
+  $stomp_port         = 61613,
+  $client             = 'false',
+  $enabled            = 'true',
+  $client_logfile     = '/var/log/mcollective-client.log',
+  $configfile_client  = '/etc/mcollective/client.cfg',
+  $libdir             = '/usr/libexec/mcollective',
+){
 
   include ruby
   include facter
 
-  $stomp_host = hiera('mcollective::stomp_host')
-  $stomp_user = hiera('mcollective::stomp_user')
-  $stomp_password = hiera('mcollective::stomp_pass')
-  $stomp_port = hiera('mcollective::stomp_port', 61613)
-  $psk = hiera('mcollective::psk')
-  $client_real = hiera('mcollective::client', 'no')
-  $enabled = hiera('mcollective::enabled', True)
-
   case $enabled {
-    true, True: {
+    'true', true, True: {
       $real_enabled = true
     }
     default:    {
@@ -34,7 +37,7 @@ class mcollective inherits mcollective::params {
 
   class { 'mcollective::server': enabled => $real_enabled }
 
-  if ( $client_real == 'yes' ) {
+  if ( $client == 'true' or $client == true ) {
     include mcollective::client
   }
 }

@@ -3,11 +3,9 @@
 topicprefix = /topic/
 main_collective = mcollective
 collectives = mcollective
-libdir = <%= scope.lookupvar('mcollective::params::libdir') %>
-logfile = /var/log/mcollective.log
+libdir = <%= scope.lookupvar('mcollective::libdir') %>
+logfile = <%= scope.lookupvar('mcollective::client_logfile') %>
 loglevel = info
-daemonize = 1
-registerinterval = 120
 
 # Plugins 
 securityprovider = psk
@@ -22,9 +20,5 @@ plugin.activemq.pool.1.user = <%= scope.lookupvar('mcollective::stomp_user') %>
 plugin.activemq.pool.1.password = <%= scope.lookupvar('mcollective::stomp_password') %>
 
 # Facts
-factsource = <%= scope.lookupvar('mcollective::params::factsource') %>
-plugin.yaml = <%= scope.lookupvar('mcollective::params::pluginyaml') %>
-
-# Registration (can be used for keepalive)
-registerinterval = 300
-registration = Agentlist
+factsource = yaml
+plugin.yaml = /etc/mcollective/facts.yaml
