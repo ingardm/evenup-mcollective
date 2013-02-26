@@ -1,3 +1,5 @@
+v1.2.1:
+  Fixed subscribe bug on Service['mcollective']
 v1.2.0:
   Remove params class
   Move to parameterized class
