@@ -1,12 +1,16 @@
-# Class: mcollective::server
+# == Class: mcollective::server
 #
-# This module manages the mcollective server
+# This class manages the mcollective server service
 #
-# Requires:
-# java, ruby
 #
-# Sample Usage:
-#   include mcollective::server
+# === Parameters
+#
+# See the init.pp for parameter information.  This class should not be direclty called.
+#
+#
+# === Authors
+#
+# * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
 class mcollective::server($enabled = true) {
 

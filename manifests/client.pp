@@ -1,3 +1,19 @@
+# == Class: mcollective::client
+#
+# This class manages the mcollective client config
+#
+#
+# === Parameters
+#
+# See the init.pp for parameter information.  This class should not be direclty called.
+#
+#
+# === Authors
+#
+# * Justin Lambert <mailto:jlambert@letsevenup.com>
+#
+
+
 # Class: mcollective::client
 #
 # This module manages the mcollective client
