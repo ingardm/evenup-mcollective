@@ -50,7 +50,7 @@ class mcollective::server($enabled = true) {
       ensure     => $running,
       enable     => $enabled,
       require    => Package['mcollective'],
-      subscribe  => File['/etc/mcollective/server.cfg.erb'];
+      subscribe  => File['/etc/mcollective/server.cfg'];
   }
 
   package {
