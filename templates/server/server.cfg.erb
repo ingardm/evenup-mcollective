@@ -3,23 +3,22 @@
 topicprefix = /topic/
 main_collective = mcollective
 collectives = mcollective
-libdir = <%= scope.lookupvar('mcollective::libdir') %>
 logfile = /var/log/mcollective.log
 loglevel = info
 daemonize = 1
 registerinterval = 120
 
-# Plugins 
+# Plugins
 securityprovider = psk
-plugin.psk = <%= scope.lookupvar('mcollective::psk') %>
+plugin.psk = <%= scope.lookupvar('psk') %>
 direct_addressing = 1
 
 connector = activemq
 plugin.activemq.pool.size = 1
-plugin.activemq.pool.1.host = <%= scope.lookupvar('mcollective::stomp_host') %>
-plugin.activemq.pool.1.port = <%= scope.lookupvar('mcollective::stomp_port') %>
-plugin.activemq.pool.1.user = <%= scope.lookupvar('mcollective::stomp_user') %>
-plugin.activemq.pool.1.password = <%= scope.lookupvar('mcollective::stomp_password') %>
+plugin.activemq.pool.1.host = <%= scope.lookupvar('stomp_host') %>
+plugin.activemq.pool.1.port = <%= scope.lookupvar('stomp_port') %>
+plugin.activemq.pool.1.user = <%= scope.lookupvar('stomp_user') %>
+plugin.activemq.pool.1.password = <%= scope.lookupvar('stomp_password') %>
 
 # Facts
 factsource = yaml
@@ -28,3 +27,12 @@ plugin.yaml = /etc/mcollective/facts.yaml
 # Registration (can be used for keepalive)
 registerinterval = 300
 registration = Agentlist
+
+<% if scope.lookupvar('audit_provider') != '' -%>
+# Audit
+rpcaudit = 1
+rpcauditprovider = <%= scope.lookupvar('audit_provider') %>
+<% if scope.lookupvar('audit_logfile') != '' -%>
+plugin.<%= scope.lookupvar('audit_provider').to_s.downcase %>.logfile = <%= scope.lookupvar('audit_logfile') %>
+<% end %>
+<% end %>
