@@ -1,6 +1,8 @@
 fixtures:
   repositories:
+    beaver: git://github.com/evenup/evenup-beaver.git
     common: git://github.com/evenup/evenup-common.git
+    concat: git://github.com/ripienaar/puppet-concat.git
     facter: git://github.com/evenup/evenup-facter.git
     logrotate: git://github.com/evenup/evenup-logrotate.git
     ruby: git://github.com/evenup/evenup-ruby.git

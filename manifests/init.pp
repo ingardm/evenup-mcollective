@@ -47,7 +47,9 @@ class mcollective(
   $enabled            = 'true',
   $client_logfile     = '/var/log/mcollective-client.log',
   $configfile_client  = '/etc/mcollective/client.cfg',
-  $libdir             = '/usr/libexec/mcollective',
+  $audit_provider     = '',
+  $audit_logfile      = '',
+  $audit_package      = '',
 ){
 
   include ruby
@@ -62,7 +64,17 @@ class mcollective(
     }
   }
 
-  class { 'mcollective::server': enabled => $real_enabled }
+  class { 'mcollective::server': 
+    enabled         => $real_enabled,
+    stomp_host      => $stomp_host,
+    stomp_port      => $stomp_port,
+    stomp_user      => $stomp_user,
+    stomp_password  => $stomp_password,
+    psk             => $psk,
+    audit_provider  => $audit_provider,
+    audit_package   => $audit_package,
+    audit_logfile   => $audit_logfile,
+  }
 
   if ( $client == 'true' or $client == true ) {
     include mcollective::client
