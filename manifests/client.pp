@@ -21,7 +21,15 @@
 # Sample Usage:
 #   include mcollective::client
 #
-class mcollective::client {
+class mcollective::client (
+  $stomp_host,
+  $stomp_user,
+  $stomp_password,
+  $psk,
+  $stomp_port = 61613,
+  $client_logfile = '/var/log/mcollective-client.log',
+  $packages = [],
+) {
 
   package { 'mcollective-client':
     ensure => 'latest',
@@ -54,10 +62,7 @@ class mcollective::client {
     options => ['missingok', 'notifempty', 'create 0660 root admin', 'sharedscripts', 'weekly'];
   }
 
-  package {
-    [ 'mcollective-filemgr-client', 'mcollective-package-client',
-      'mcollective-service-client', 'mcollective-puppet-client' ]:
-      ensure  => latest,
-      notify  => Service['mcollective'];
+  package { $packages:
+    ensure  => latest,
   }
 }

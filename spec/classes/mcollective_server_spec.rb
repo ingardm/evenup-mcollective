@@ -2,7 +2,13 @@ require 'spec_helper'
 
 describe 'mcollective::server', :type => :class do
   let(:facts) { { :concat_basedir => '/var/lib/puppet/concat' } }
-  let(:params) { { :stomp_host => 'stomp', :stomp_user => 'mcollective', :stomp_password => 'password', :psk => 'string' } }
+  let(:params) { {
+    :stomp_host => 'stomp',
+    :stomp_user => 'mcollective',
+    :stomp_password => 'password',
+    :psk => 'string',
+    :packages => [ 'mcollective-filemgr-agent', 'mcollective-puppet-agent']
+  } }
 
   it { should create_class('mcollective::server') }
   it { should contain_package('mcollective') }
@@ -15,6 +21,8 @@ describe 'mcollective::server', :type => :class do
     'group'   => 'root' )}
   it { should contain_file('/etc/mcollective/facts.yaml').with_mode('0400') }
   it { should contain_logrotate__file('mcollective') }
+  it { should contain_package('mcollective-filemgr-agent') }
+  it { should contain_package('mcollective-puppet-agent') }
 
   context 'when audit logging enabled' do
     let(:params) { {

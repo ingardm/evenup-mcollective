@@ -6,31 +6,46 @@
 # === Parameters
 #
 # [*stomp_host*]
-#   Name of the stomp server
+#   String.  Name of the stomp server
 #
 # [*stmop_user*]
-#   Username to connect to the stomp server with
+#   String.  Username to connect to the stomp server with
 #
 # [*stomp_password*]
-#   Password to connect to the stomp server
+#   String.  Password to connect to the stomp server
 #
 # [*psk*]
-#   Pre-shared key
+#   String.  Pre-shared key
 #
 # [*client*]
-#   Install the client?
+#   Boolean.  Install the client?
+#   Default: false
 #
 # [*enabled*]
-#   Enable the mcollective service?
+#   Boolean.  Enable the mcollective service?
+#   Default: true
+#
+# [*server_packages*]
+#   String/Array of Strings.  Which packages should be installed on the server
+#
+# [*client_packages*]
+#   String/Array of Strings.  Which packages should be intalled on the client
 #
 # [*client_logfile*]
-#   Where to write the client logs
+#   String.  Where to write the client logs
 #
 # [*configfile_client*]
-#   Where is the client config file
+#   String.  Where is the client config file
 #
-# [*libdir*]
-#   The mcollective libdir
+# [*audit_provider*]
+#   String.  Name of the audit provider
+#
+# [*audit_logfile*]
+#   String.  Where should the logfile be stored?
+#   Assumes the parameter is plugin.$audit_provider.logfile
+#
+# [*audit_package*]
+#   String.  Name of the package to be installed to provide audit functionality
 #
 #
 # === Authors
@@ -45,6 +60,8 @@ class mcollective(
   $stomp_port         = 61613,
   $client             = 'false',
   $enabled            = 'true',
+  $server_packages    = [],
+  $client_packages    = [],
   $client_logfile     = '/var/log/mcollective-client.log',
   $configfile_client  = '/etc/mcollective/client.cfg',
   $audit_provider     = '',
@@ -64,19 +81,28 @@ class mcollective(
     }
   }
 
-  class { 'mcollective::server': 
+  class { 'mcollective::server':
     enabled         => $real_enabled,
     stomp_host      => $stomp_host,
     stomp_port      => $stomp_port,
     stomp_user      => $stomp_user,
     stomp_password  => $stomp_password,
     psk             => $psk,
-    audit_provider  => $audit_provider,
+    packages        => $server_packages,
     audit_package   => $audit_package,
+    audit_provider  => $audit_provider,
     audit_logfile   => $audit_logfile,
   }
 
   if ( $client == 'true' or $client == true ) {
-    include mcollective::client
+    class { 'mcollective::client': 
+      stomp_host      => $stomp_host,
+      stomp_port      => $stomp_port,
+      stomp_user      => $stomp_user,
+      stomp_password  => $stomp_password,
+      psk             => $psk,
+      client_logfile  => $client_logfile,
+      packages        => $client_packages,
+    }
   }
 }

@@ -19,8 +19,9 @@ class mcollective::server (
   $psk,
   $enabled        = true,
   $stomp_port     = 61613,
-  $audit_provider = '',
+  $packages       = [],
   $audit_package  = '',
+  $audit_provider = '',
   $audit_logfile  = '',
 ) {
 
@@ -35,14 +36,15 @@ class mcollective::server (
     }
   }
 
-  Package { notify  => Service['mcollective'] }
   # Set up mcollective
-  package { 'mcollective':
-    ensure  => 'latest',
-  }
+  Package { notify => Service['mcollective'], ensure => 'latest' }
 
-  package { 'rubygem-stomp':
-    ensure  => 'present',
+  package { ['mcollective', 'rubygem-stomp']: }
+
+  package { $packages: }
+
+  if $audit_package != '' {
+    package { $audit_package: }
   }
 
   file { '/etc/mcollective/server.cfg':
@@ -61,18 +63,6 @@ class mcollective::server (
     subscribe  => File['/etc/mcollective/server.cfg'];
   }
 
-  package {
-    [ 'mcollective-filemgr-agent', 'mcollective-package-agent',
-      'mcollective-puppet-agent', 'mcollective-service-agent',
-      'mcollective-process-agent', 'rubygem-sys-proctable' ]:
-      ensure  => latest,
-  }
-
-  if $audit_package != '' {
-    package { $audit_package:
-      ensure  => latest,
-    }
-  }
 
   # Make sure the provisioner agent is removed
   file { '/usr/libexec/mcollective/mcollective/agent/provision.rb': ensure => 'absent', notify => Service['mcollective'] }

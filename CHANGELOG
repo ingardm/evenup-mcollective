@@ -1,3 +1,6 @@
+v1.3.0:
+  Add ability to specify audit module in server
+  Agent and client packages are now passed via parameter rather than hard coded
 v1.2.1:
   Fixed subscribe bug on Service['mcollective']
 v1.2.0:
