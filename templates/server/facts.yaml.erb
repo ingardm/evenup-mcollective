@@ -1,6 +1,6 @@
 <%=
     yaml = ["---"]
-    keys = scope.to_hash.keys.reject {|k| k.to_s =~ /(uptime.*|path|timestamp|free|.*password.*|.*psk.*|.*key)/}
+    keys = scope.to_hash.keys.reject {|k| k.to_s =~ /(uptime.*|path|timestamp|free|.*password.*|.*psk.*|.*key|sshfp.*)/}
     keys.sort.each {|k| yaml << "#{k}: #{scope.lookupvar(k).to_s}"}
     yaml.join("\n   ")
 %>
