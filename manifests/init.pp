@@ -47,6 +47,10 @@
 # [*audit_package*]
 #   String.  Name of the package to be installed to provide audit functionality
 #
+# [*beaver*]
+#   Boolean.  Whether or not to add beaver stanzas for logging
+#   Default: false
+#
 #
 # === Authors
 #
