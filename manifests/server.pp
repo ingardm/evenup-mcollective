@@ -76,10 +76,12 @@ class mcollective::server (
   }
 
   if $audit_logfile != '' {
-    beaver::stanza { $audit_logfile:
-      type    => 'mcollective-audit',
-      tags    => [$::disposition],
-      format  => 'rawjson',
+    if $mcollective::beaver {
+      beaver::stanza { $audit_logfile:
+        type    => 'mcollective-audit',
+        tags    => [$::disposition],
+        format  => 'rawjson',
+      }
     }
 
     logrotate::file { 'mcollective-audit':
