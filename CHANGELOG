@@ -1,5 +1,6 @@
 v1.3.0:
-  Add ability to specify audit module in server
+  Update for facter 1.7
+  Add ability to specify audit module in server (and optionally send to logstash with beaver)
   Agent and client packages are now passed via parameter rather than hard coded
 v1.2.1:
   Fixed subscribe bug on Service['mcollective']

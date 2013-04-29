@@ -1,7 +1,8 @@
 What is it?
 ===========
 
-Puppet module to configure mcollective using ActiveMQ.
+Puppet module to configure mcollective using ActiveMQ including auditing and
+audit logging with beaver.
 
 Released under the Apache 2.0 licence
 
