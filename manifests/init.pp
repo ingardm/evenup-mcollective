@@ -99,7 +99,7 @@ class mcollective(
   }
 
   if ( $client == 'true' or $client == true ) {
-    class { 'mcollective::client': 
+    class { 'mcollective::client':
       stomp_host      => $stomp_host,
       stomp_port      => $stomp_port,
       stomp_user      => $stomp_user,

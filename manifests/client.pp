@@ -58,7 +58,7 @@ class mcollective::client (
 
   # Logrotate for mcollective client logs
   logrotate::file { 'mcollective-client':
-    log     => $mcollective::client_logfile,
+    log     => $client_logfile,
     options => ['missingok', 'notifempty', 'create 0660 root admin', 'sharedscripts', 'weekly'];
   }
 
