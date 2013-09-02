@@ -1,5 +1,5 @@
 name 'evenup-mcollective'
-version '1.3.0'
+version '1.4.0'
 author 'Justin Lambert <jlambert@letsevenup.com>'
 license 'Apache'
 summary 'Manages mcollective.'
