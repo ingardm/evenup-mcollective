@@ -2,13 +2,7 @@ require 'spec_helper'
 
 describe 'mcollective::server', :type => :class do
   let(:facts) { { :concat_basedir => '/var/lib/puppet/concat' } }
-  let(:params) { {
-    :stomp_host => 'stomp',
-    :stomp_user => 'mcollective',
-    :stomp_password => 'password',
-    :psk => 'string',
-    :packages => [ 'mcollective-filemgr-agent', 'mcollective-puppet-agent']
-  } }
+  let(:params) { { :packages => [ 'mcollective-filemgr-agent', 'mcollective-puppet-agent'] } }
 
   it { should create_class('mcollective::server') }
   it { should contain_package('mcollective') }
@@ -25,13 +19,7 @@ describe 'mcollective::server', :type => :class do
   it { should contain_package('mcollective-puppet-agent') }
 
   context 'when audit logging enabled' do
-    let(:params) { {
-      :stomp_host => 'stomp',
-      :stomp_user => 'mcollective',
-      :stomp_password => 'password',
-      :psk => 'string',
-      :audit_provider => 'Logstash'
-    } }
+    let(:params) { { :audit_provider => 'Logstash' } }
 
     it { should contain_file('/etc/mcollective/server.cfg').with_content(/rpcauditprovider\s\=\sLogstash/) }
     it { should_not contain_file('/etc/mcollective/server.cfg').with_content(/plugin.logstash.logfile/) }
@@ -39,10 +27,6 @@ describe 'mcollective::server', :type => :class do
 
   context 'with audit package and logfile' do
     let(:params) { {
-      :stomp_host => 'stomp',
-      :stomp_user => 'mcollective',
-      :stomp_password => 'password',
-      :psk => 'string',
       :audit_provider => 'Logstash',
       :audit_package  => 'mcollective-logstash-audit',
       :audit_logfile  => '/var/log/foo.json'
@@ -51,6 +35,18 @@ describe 'mcollective::server', :type => :class do
     it { should contain_package('mcollective-logstash-audit') }
     it { should contain_file('/etc/mcollective/server.cfg').with_content(/rpcauditprovider\s\=\sLogstash/) }
     it { should contain_file('/etc/mcollective/server.cfg').with_content(/plugin.logstash.logfile\s\=\s\/var\/log\/foo\.json/) }
+    it { should_not contain_beaver__stanza('/var/log/json.foo') }
+
+    context 'with beaver' do
+      let(:params) { {
+        :audit_provider => 'Logstash',
+        :audit_package  => 'mcollective-logstash-audit',
+        :audit_logfile  => '/var/log/foo.json',
+        :beaver         => true,
+      } }
+
+      it { should contain_beaver__stanza('/var/log/foo.json') }
+    end
   end
 
 end

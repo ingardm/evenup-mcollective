@@ -13,16 +13,17 @@
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
 class mcollective::server (
-  $stomp_host,
-  $stomp_user,
-  $stomp_password,
-  $psk,
+  $stomp_host     = 'localhost',
+  $stomp_user     = 'mcollective',
+  $stomp_password = 'password',
+  $psk            = 'changeme',
   $enabled        = true,
   $stomp_port     = 61613,
   $packages       = [],
   $audit_package  = '',
   $audit_provider = '',
   $audit_logfile  = '',
+  $beaver         = false,
 ) {
 
   case $enabled {
@@ -76,7 +77,7 @@ class mcollective::server (
   }
 
   if $audit_logfile != '' {
-    if $mcollective::beaver {
+    if $beaver == true {
       beaver::stanza { $audit_logfile:
         type    => 'mcollective-audit',
         tags    => [$::disposition],
