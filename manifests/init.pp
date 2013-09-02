@@ -7,15 +7,19 @@
 #
 # [*stomp_host*]
 #   String.  Name of the stomp server
+#   Default: localhost
 #
 # [*stmop_user*]
 #   String.  Username to connect to the stomp server with
+#   Default: mcollective
 #
 # [*stomp_password*]
 #   String.  Password to connect to the stomp server
+#   Default: password
 #
 # [*psk*]
 #   String.  Pre-shared key
+#   Default: changeme
 #
 # [*client*]
 #   Boolean.  Install the client?
@@ -57,13 +61,13 @@
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
 class mcollective(
-  $stomp_host,
-  $stomp_user,
-  $stomp_password,
-  $psk,
+  $stomp_host         = 'localhost',
+  $stomp_user         = 'mcollective',
+  $stomp_password     = 'password',
+  $psk                = 'changeme',
   $stomp_port         = 61613,
-  $client             = 'false',
-  $enabled            = 'true',
+  $client             = false,
+  $enabled            = true,
   $server_packages    = [],
   $client_packages    = [],
   $client_logfile     = '/var/log/mcollective-client.log',
@@ -71,6 +75,7 @@ class mcollective(
   $audit_provider     = '',
   $audit_logfile      = '',
   $audit_package      = '',
+  $beaver             = false,
 ){
 
   include ruby
@@ -96,6 +101,7 @@ class mcollective(
     audit_package   => $audit_package,
     audit_provider  => $audit_provider,
     audit_logfile   => $audit_logfile,
+    beaver          => $beaver,
   }
 
   if ( $client == 'true' or $client == true ) {

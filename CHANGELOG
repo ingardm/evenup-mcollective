@@ -1,3 +1,5 @@
+  Make beaver optional
+  Set defaults for all params
 v1.3.0:
   Update for facter 1.7
   Add ability to specify audit module in server (and optionally send to logstash with beaver)

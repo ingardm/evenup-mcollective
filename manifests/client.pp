@@ -22,13 +22,13 @@
 #   include mcollective::client
 #
 class mcollective::client (
-  $stomp_host,
-  $stomp_user,
-  $stomp_password,
-  $psk,
-  $stomp_port = 61613,
+  $stomp_host     = 'localhost',
+  $stomp_user     = 'mcollective',
+  $stomp_password = 'password',
+  $psk            = 'changeme',
+  $stomp_port     = 61613,
   $client_logfile = '/var/log/mcollective-client.log',
-  $packages = [],
+  $packages       = [],
 ) {
 
   package { 'mcollective-client':
@@ -39,14 +39,14 @@ class mcollective::client (
     ensure  => file,
     mode    => '0440',
     owner   => root,
-    group   => admin,
+    group   => root,
     require => Package['mcollective-client'],
     content => template('mcollective/client/client.cfg.erb'),
   }
 
   file { $mcollective::client_logfile:
     owner => root,
-    group => admin,
+    group => root,
     mode  => '0660',
   }
 

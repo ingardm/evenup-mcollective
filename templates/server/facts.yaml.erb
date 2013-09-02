@@ -1,6 +1,13 @@
 <%=
-    yaml = ["---"]
-    keys = scope.to_hash.keys.reject {|k| k.to_s =~ /(uptime.*|path|timestamp|free|.*password.*|.*psk.*|.*key|sshfp.*)/}
-    keys.sort.each {|k| yaml << "#{k}: #{scope.lookupvar(k).to_s}"}
-    yaml.join("\n   ")
+    # remove dynamic facts
+    obj = scope.to_hash.reject {|k,v| k.to_s =~ /^(uptime.*|rubysitedir|_timestamp|memoryfree.*|swapfree.*|title|name|caller_module_name|module_name|path|sshfp_*)$/ }
+
+    out = "---\n"
+    obj.keys.sort.each do |key|
+      if obj[key].is_a?(String)
+        out += "#{key}: #{obj[key]}\n"
+      end
+    end
+
+    out
 %>
