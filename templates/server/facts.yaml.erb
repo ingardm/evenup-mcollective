@@ -2,11 +2,11 @@
     # remove dynamic facts
     obj = scope.to_hash.reject {|k,v| k.to_s =~ /^(uptime.*|rubysitedir|_timestamp|memoryfree.*|swapfree.*|title|name|caller_module_name|module_name|path|sshfp_*)$/ }
 
-    arr = obj.sort
     out = "---\n"
-    arr.each do |element|
-      entry = {element[0] => element[1]}
-      out += entry.to_yaml.to_a[1..-1].join + "\n"
+    obj.keys.sort.each do |key|
+      if obj[key].is_a?(String)
+        out += "#{key}: #{obj[key]}\n"
+      end
     end
 
     out
