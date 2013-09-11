@@ -8,6 +8,7 @@ libdir = /usr/libexec/mcollective
 loglevel = info
 daemonize = 1
 registerinterval = 120
+classesfile = <%= scope.lookupvar('classes_file') %>
 
 # Plugins
 securityprovider = psk
