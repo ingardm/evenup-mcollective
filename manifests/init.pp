@@ -35,6 +35,10 @@
 # [*client_packages*]
 #   String/Array of Strings.  Which packages should be intalled on the client
 #
+# [*classes_file*]
+#   String.  Location of puppet classes.txt cache file
+#   Default: /var/lib/puppet/classes.txt
+#
 # [*client_logfile*]
 #   String.  Where to write the client logs
 #
