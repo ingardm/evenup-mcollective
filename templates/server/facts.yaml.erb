@@ -1,6 +1,6 @@
 <%=
     # remove dynamic facts
-    obj = scope.to_hash.reject {|k,v| k.to_s =~ /^(uptime.*|rubysitedir|_timestamp|memoryfree.*|swapfree.*|title|name|caller_module_name|module_name|path|sshfp_*)$/ }
+    obj = scope.to_hash.reject {|k,v| k.to_s =~ /^(uptime.*|rubysitedir|_timestamp|memoryfree.*|swapfree.*|title|name|caller_module_name|module_name|path|sshfp_.*)$/ }
 
     out = "---\n"
     obj.keys.sort.each do |key|
