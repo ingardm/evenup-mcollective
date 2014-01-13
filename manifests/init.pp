@@ -111,20 +111,21 @@ class mcollective(
   }
 
   class { 'mcollective::server':
-    enabled                   => $real_enabled,
-    stomp_host                => $stomp_host,
-    stomp_port                => $stomp_port,
-    stomp_user                => $stomp_user,
-    stomp_password            => $stomp_password,
-    psk                       => $psk,
-    classes_file              => $classes_file,
-    packages                  => $server_packages,
-    audit_package             => $audit_package,
-    audit_provider            => $audit_provider,
-    audit_logfile             => $audit_logfile,
-    resource_type_whitelist   => $resource_type_whitelist,
-    resource_type_blacklist   => $resource_type_blacklist,
-    beaver                    => $beaver,
+    enabled                           => $real_enabled,
+    stomp_host                        => $stomp_host,
+    stomp_port                        => $stomp_port,
+    stomp_user                        => $stomp_user,
+    stomp_password                    => $stomp_password,
+    psk                               => $psk,
+    classes_file                      => $classes_file,
+    packages                          => $server_packages,
+    audit_package                     => $audit_package,
+    audit_provider                    => $audit_provider,
+    audit_logfile                     => $audit_logfile,
+    resource_allow_managed_resources  => $resource_allow_managed_resources,
+    resource_type_whitelist           => $resource_type_whitelist,
+    resource_type_blacklist           => $resource_type_blacklist,
+    beaver                            => $beaver,
   }
 
   if ( $client == 'true' or $client == true ) {
