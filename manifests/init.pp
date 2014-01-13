@@ -55,6 +55,18 @@
 # [*audit_package*]
 #   String.  Name of the package to be installed to provide audit functionality
 #
+# [*resource_allow_managed_resources*]
+#   Boolean.  Should the mcollective puppet agent be allowed to manage resources managed by puppet?
+#   Default: false
+#
+# [*resource_type_whitelist*]
+#   String.  List of types allowed to be managed by the mcollective puppet agent.
+#   Cannot be set with resource_type_blacklist.
+#
+# [*resource_type_blacklist*]
+#   String.  List of types denied to be managed by the mcollective puppet agent.
+#   Cannot be set with resource_type_whitelist.
+#
 # [*beaver*]
 #   Boolean.  Whether or not to add beaver stanzas for logging
 #   Default: false
@@ -65,22 +77,25 @@
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
 class mcollective(
-  $stomp_host         = 'localhost',
-  $stomp_user         = 'mcollective',
-  $stomp_password     = 'password',
-  $stomp_port         = 61613,
-  $psk                = 'changeme',
-  $client             = false,
-  $enabled            = true,
-  $server_packages    = [],
-  $client_packages    = [],
-  $classes_file       = '/var/lib/puppet/classes.txt',
-  $client_logfile     = '/var/log/mcollective-client.log',
-  $configfile_client  = '/etc/mcollective/client.cfg',
-  $audit_provider     = '',
-  $audit_logfile      = '',
-  $audit_package      = '',
-  $beaver             = false,
+  $stomp_host                       = 'localhost',
+  $stomp_user                       = 'mcollective',
+  $stomp_password                   = 'password',
+  $stomp_port                       = 61613,
+  $psk                              = 'changeme',
+  $client                           = false,
+  $enabled                          = true,
+  $server_packages                  = [],
+  $client_packages                  = [],
+  $classes_file                     = '/var/lib/puppet/classes.txt',
+  $client_logfile                   = '/var/log/mcollective-client.log',
+  $configfile_client                = '/etc/mcollective/client.cfg',
+  $audit_provider                   = '',
+  $audit_logfile                    = '',
+  $audit_package                    = '',
+  $resource_allow_managed_resources = false,
+  $resource_type_whitelist          = undef,
+  $resource_type_blacklist          = undef,
+  $beaver                           = false,
 ){
 
   include ruby
@@ -96,18 +111,20 @@ class mcollective(
   }
 
   class { 'mcollective::server':
-    enabled         => $real_enabled,
-    stomp_host      => $stomp_host,
-    stomp_port      => $stomp_port,
-    stomp_user      => $stomp_user,
-    stomp_password  => $stomp_password,
-    psk             => $psk,
-    classes_file    => $classes_file,
-    packages        => $server_packages,
-    audit_package   => $audit_package,
-    audit_provider  => $audit_provider,
-    audit_logfile   => $audit_logfile,
-    beaver          => $beaver,
+    enabled                   => $real_enabled,
+    stomp_host                => $stomp_host,
+    stomp_port                => $stomp_port,
+    stomp_user                => $stomp_user,
+    stomp_password            => $stomp_password,
+    psk                       => $psk,
+    classes_file              => $classes_file,
+    packages                  => $server_packages,
+    audit_package             => $audit_package,
+    audit_provider            => $audit_provider,
+    audit_logfile             => $audit_logfile,
+    resource_type_whitelist   => $resource_type_whitelist,
+    resource_type_blacklist   => $resource_type_blacklist,
+    beaver                    => $beaver,
   }
 
   if ( $client == 'true' or $client == true ) {

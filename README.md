@@ -48,7 +48,7 @@ TODO:
 ____
 - [x] Move installed plugins outside of module
 - [x] Parameters for auditing
-- [ ] Allow enable/disable log shipping (beaver right now)
+- [x] Allow enable/disable log shipping (beaver right now)
 
 Contribute:
 -----------

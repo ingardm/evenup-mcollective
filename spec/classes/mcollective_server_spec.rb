@@ -49,4 +49,35 @@ describe 'mcollective::server', :type => :class do
     end
   end
 
+  context 'plugin resource management' do
+    context 'default' do
+      it { should contain_file('/etc/mcollective/server.cfg').with_content(/plugin\.puppet\.resource_allow_managed_resources = false/) }
+      it { should_not contain_file('/etc/mcollective/server.cfg').with_content(/plugin\.puppet\.resource_type_whitelist/) }
+      it { should_not contain_file('/etc/mcollective/server.cfg').with_content(/plugin\.puppet\.resource_type_blacklist/) }
+    end
+
+    context 'set allow managed resources' do
+      let(:params) { { :resource_allow_managed_resources => true } }
+      it { should contain_file('/etc/mcollective/server.cfg').with_content(/plugin\.puppet\.resource_allow_managed_resources = true/) }
+    end
+
+    context 'whitelist' do
+      let(:params) { { :resource_type_whitelist => 'service' } }
+      it { should contain_file('/etc/mcollective/server.cfg').with_content(/plugin\.puppet\.resource_type_whitelist = service/) }
+      it { should_not contain_file('/etc/mcollective/server.cfg').with_content(/plugin\.puppet\.resource_type_blacklist/) }
+    end
+
+    context 'blacklist' do
+      let(:params) { { :resource_type_blacklist => 'service' } }
+      it { should contain_file('/etc/mcollective/server.cfg').with_content(/plugin\.puppet\.resource_type_blacklist = service/) }
+      it { should_not contain_file('/etc/mcollective/server.cfg').with_content(/plugin\.puppet\.resource_type_whitelist/) }
+    end
+
+    context 'not allow setting blacklist and whitelist' do
+      let(:params) { { :resource_type_whitelist => 'exec', :resource_type_blacklist => 'service' } }
+      it { expect { should raise_error(Puppet::Error) } }
+    end
+
+  end
+
 end

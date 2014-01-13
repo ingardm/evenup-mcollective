@@ -36,5 +36,14 @@ rpcaudit = 1
 rpcauditprovider = <%= scope.lookupvar('audit_provider') %>
 <% if scope.lookupvar('audit_logfile') != '' -%>
 plugin.<%= scope.lookupvar('audit_provider').to_s.downcase %>.logfile = <%= scope.lookupvar('audit_logfile') %>
-<% end %>
-<% end %>
+<% end -%>
+<% end -%>
+
+# Puppet plugin whitelist
+plugin.puppet.resource_allow_managed_resources = <%= scope.lookupvar('resource_allow_managed_resources') %>
+<% if scope.lookupvar('resource_type_whitelist') && scope.lookupvar('resource_type_whitelist') != '' -%>
+plugin.puppet.resource_type_whitelist = <%= scope.lookupvar('resource_type_whitelist') %>
+<% end -%>
+<% if scope.lookupvar('resource_type_blacklist') && scope.lookupvar('resource_type_blacklist') != '' -%>
+plugin.puppet.resource_type_blacklist = <%= scope.lookupvar('resource_type_blacklist') %>
+<% end -%>
