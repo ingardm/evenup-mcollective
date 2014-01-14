@@ -1,3 +1,5 @@
+20140113 v1.6.0
+  Add configuration for puppet agent plugin
 20130911 v1.5.0
   Configure classes file
   Facts.yaml fix
