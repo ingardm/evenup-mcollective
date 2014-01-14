@@ -13,19 +13,26 @@
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
 class mcollective::server (
-  $stomp_host     = 'localhost',
-  $stomp_user     = 'mcollective',
-  $stomp_password = 'password',
-  $stomp_port     = 61613,
-  $psk            = 'changeme',
-  $enabled        = true,
-  $classes_file   = '/var/lib/puppet/classes.txt',
-  $packages       = [],
-  $audit_package  = '',
-  $audit_provider = '',
-  $audit_logfile  = '',
-  $beaver         = false,
+  $stomp_host                       = 'localhost',
+  $stomp_user                       = 'mcollective',
+  $stomp_password                   = 'password',
+  $stomp_port                       = 61613,
+  $psk                              = 'changeme',
+  $enabled                          = true,
+  $classes_file                     = '/var/lib/puppet/classes.txt',
+  $packages                         = [],
+  $audit_package                    = '',
+  $audit_provider                   = '',
+  $audit_logfile                    = '',
+  $resource_allow_managed_resources = false,
+  $resource_type_whitelist          = '',
+  $resource_type_blacklist          = '',
+  $beaver                           = false,
 ) {
+
+  if ( $resource_type_whitelist and $resource_type_whitelist != '' ) and ( $resource_type_blacklist and $resource_type_blacklist != '' ) {
+    fail('Cannot set resource_type_whitelist and resource_type_blacklist')
+  }
 
   case $enabled {
     true:     {
