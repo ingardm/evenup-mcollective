@@ -28,6 +28,7 @@ class mcollective::client (
   $psk            = 'changeme',
   $stomp_port     = 61613,
   $client_logfile = '/var/log/mcollective-client.log',
+  $client_group   = 'root',
   $packages       = [],
 ) {
 
@@ -39,7 +40,7 @@ class mcollective::client (
     ensure  => file,
     mode    => '0440',
     owner   => root,
-    group   => root,
+    group   => $client_group,
     require => Package['mcollective-client'],
     content => template('mcollective/client/client.cfg.erb'),
   }
