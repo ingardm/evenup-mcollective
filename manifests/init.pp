@@ -42,6 +42,10 @@
 # [*client_logfile*]
 #   String.  Where to write the client logs
 #
+# [*client_group*]
+#   String.  Group owner of the mcollective client.cfg
+#   Default: root
+#
 # [*configfile_client*]
 #   String.  Where is the client config file
 #
@@ -88,6 +92,7 @@ class mcollective(
   $client_packages                  = [],
   $classes_file                     = '/var/lib/puppet/classes.txt',
   $client_logfile                   = '/var/log/mcollective-client.log',
+  $client_group                     = 'root',
   $configfile_client                = '/etc/mcollective/client.cfg',
   $audit_provider                   = '',
   $audit_logfile                    = '',
@@ -136,6 +141,7 @@ class mcollective(
       stomp_password  => $stomp_password,
       psk             => $psk,
       client_logfile  => $client_logfile,
+      client_group    => $client_group,
       packages        => $client_packages,
     }
   }
