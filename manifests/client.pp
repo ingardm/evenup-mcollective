@@ -45,9 +45,9 @@ class mcollective::client (
     content => template('mcollective/client/client.cfg.erb'),
   }
 
-  file { $mcollective::client_logfile:
+  file { $client_logfile:
     owner => root,
-    group => root,
+    group => $client_group,
     mode  => '0660',
   }
 
