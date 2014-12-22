@@ -14,7 +14,6 @@ describe 'mcollective::server', :type => :class do
     'owner'   => 'root',
     'group'   => 'root' )}
   it { should contain_file('/etc/mcollective/facts.yaml').with_mode('0400') }
-  it { should contain_logrotate__file('mcollective') }
   it { should contain_package('mcollective-filemgr-agent') }
   it { should contain_package('mcollective-puppet-agent') }
 
