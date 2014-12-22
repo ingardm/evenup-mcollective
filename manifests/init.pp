@@ -104,7 +104,7 @@ class mcollective(
 ){
 
   case $enabled {
-    'true', true, True: {
+    true: {
       $real_enabled = true
     }
     default:    {
@@ -130,7 +130,7 @@ class mcollective(
     beaver                           => $beaver,
   }
 
-  if ( $client == 'true' or $client == true ) {
+  if $client {
     class { 'mcollective::client':
       stomp_host     => $stomp_host,
       stomp_port     => $stomp_port,
