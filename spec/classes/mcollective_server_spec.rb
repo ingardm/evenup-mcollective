@@ -37,6 +37,7 @@ describe 'mcollective::server', :type => :class do
     it { should_not contain_beaver__stanza('/var/log/json.foo') }
 
     context 'with beaver' do
+      let(:facts) { { :concat_basedir => '/var/lib/puppet/concat', :disposition => 'prod' } }
       let(:params) { {
         :audit_provider => 'Logstash',
         :audit_package  => 'mcollective-logstash-audit',
