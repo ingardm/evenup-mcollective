@@ -1,11 +1,7 @@
 fixtures:
   repositories:
     beaver: https://github.com/evenup/evenup-beaver.git
-    common: https://github.com/evenup/evenup-common.git
     concat: https://github.com/puppetlabs/puppetlabs-concat.git
-    facter: https://github.com/evenup/evenup-facter.git
-    logrotate: https://github.com/evenup/evenup-logrotate.git
-    ruby: https://github.com/evenup/evenup-ruby.git
     stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
   symlinks:
     mcollective: "#{source_dir}"

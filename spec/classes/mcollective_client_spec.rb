@@ -12,7 +12,6 @@ describe 'mcollective::client', :type => :class do
       'owner'   => 'root',
       'group'   => 'root' ) }
     it { should contain_file('/etc/bash_completion.d/mco.sh') }
-    it { should contain_logrotate__file('mcollective-client') }
     it { should contain_package('mcollective-filemgr-client') }
     it { should contain_package('mcollective-puppet-client') }
   end

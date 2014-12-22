@@ -52,18 +52,12 @@ class mcollective::client (
   }
 
   file { '/etc/bash_completion.d/mco.sh':
-    owner   => root,
-    group   => root,
-    source  => 'puppet:///modules/mcollective/mco.sh',
-  }
-
-  # Logrotate for mcollective client logs
-  logrotate::file { 'mcollective-client':
-    log     => $client_logfile,
-    options => ['missingok', 'notifempty', 'create 0660 root admin', 'sharedscripts', 'weekly'];
+    owner  => root,
+    group  => root,
+    source => 'puppet:///modules/mcollective/mco.sh',
   }
 
   package { $packages:
-    ensure  => latest,
+    ensure => latest,
   }
 }
