@@ -2,20 +2,16 @@
   "name": "evenup-mcollective",
   "version": "1.7.1",
   "author": "Justin Lambert <jlambert@letsevenup.com>",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "summary": "Manages mcollective",
   "source": "https://github.com/evenup/evenup-mcollective",
   "project_page": "https://github.com/evenup/evenup-mcollective",
   "issues_url": "https://github.com/evenup/evenup-mcollective/issues",
-  "tags": ["mcollective", "audit"],
+  "tags": ["mcollective"],
   "operatingsystem_support": [
     { "operatingsystem": "RedHat", "operatingsystemrelease": [ "6", "7" ] },
     { "operatingsystem": "CentOS", "operatingsystemrelease": [ "6", "7" ] },
     { "operatingsystem": "Ubuntu", "operatingsystemrelease": [ "10.04", "12.04", "14.04" ] }
   ],
-  "dependencies": [
-    { "name": "evenup/beaver", "version_requirement": ">=1.0.0 <2.0.0" },
-    { "name": "puppetlabs/concat", "version_requirement": ">=1.0.0 <2.0.0" },
-    { "name": "puppetlabs/stdlib", "version_requirement": ">=3.2.0 <5.0.0" }
-  ]
+  "dependencies": []
 }

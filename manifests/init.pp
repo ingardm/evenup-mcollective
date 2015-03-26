@@ -94,9 +94,9 @@ class mcollective(
   $client_logfile                   = '/var/log/mcollective-client.log',
   $client_group                     = 'root',
   $configfile_client                = '/etc/mcollective/client.cfg',
-  $audit_provider                   = '',
-  $audit_logfile                    = '',
-  $audit_package                    = '',
+  $audit_provider                   = undef,
+  $audit_logfile                    = undef,
+  $audit_package                    = undef,
   $resource_allow_managed_resources = false,
   $resource_type_whitelist          = undef,
   $resource_type_blacklist          = undef,
@@ -107,12 +107,12 @@ class mcollective(
     true: {
       $real_enabled = true
     }
-    default:    {
+    default: {
       $real_enabled = false
     }
   }
 
-  class { 'mcollective::server':
+  class { '::mcollective::server':
     enabled                          => $real_enabled,
     stomp_host                       => $stomp_host,
     stomp_port                       => $stomp_port,
@@ -131,7 +131,7 @@ class mcollective(
   }
 
   if $client {
-    class { 'mcollective::client':
+    class { '::mcollective::client':
       stomp_host     => $stomp_host,
       stomp_port     => $stomp_port,
       stomp_user     => $stomp_user,

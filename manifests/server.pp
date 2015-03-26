@@ -21,16 +21,16 @@ class mcollective::server (
   $enabled                          = true,
   $classes_file                     = '/var/lib/puppet/classes.txt',
   $packages                         = [],
-  $audit_package                    = '',
-  $audit_provider                   = '',
-  $audit_logfile                    = '',
+  $audit_package                    = undef,
+  $audit_provider                   = undef,
+  $audit_logfile                    = undef,
   $resource_allow_managed_resources = false,
-  $resource_type_whitelist          = '',
-  $resource_type_blacklist          = '',
+  $resource_type_whitelist          = undef,
+  $resource_type_blacklist          = undef,
   $beaver                           = false,
 ) {
 
-  if ( $resource_type_whitelist and $resource_type_whitelist != '' ) and ( $resource_type_blacklist and $resource_type_blacklist != '' ) {
+  if $resource_type_whitelist and $resource_type_blacklist {
     fail('Cannot set resource_type_whitelist and resource_type_blacklist')
   }
 
@@ -52,7 +52,7 @@ class mcollective::server (
 
   package { $packages: }
 
-  if $audit_package != '' {
+  if $audit_package {
     package { $audit_package: }
   }
 
@@ -84,7 +84,7 @@ class mcollective::server (
     require => Package['mcollective'];
   }
 
-  if $audit_logfile != '' {
+  if $audit_logfile {
     if $beaver == true {
       beaver::stanza { $audit_logfile:
         type   => 'mcollective-audit',

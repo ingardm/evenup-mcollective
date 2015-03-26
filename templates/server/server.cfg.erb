@@ -8,19 +8,19 @@ libdir = /usr/libexec/mcollective
 loglevel = info
 daemonize = 1
 registerinterval = 120
-classesfile = <%= scope.lookupvar('classes_file') %>
+classesfile = <%= @classes_file %>
 
 # Plugins
 securityprovider = psk
-plugin.psk = <%= scope.lookupvar('psk') %>
+plugin.psk = <%= @psk %>
 direct_addressing = 1
 
 connector = activemq
 plugin.activemq.pool.size = 1
-plugin.activemq.pool.1.host = <%= scope.lookupvar('stomp_host') %>
-plugin.activemq.pool.1.port = <%= scope.lookupvar('stomp_port') %>
-plugin.activemq.pool.1.user = <%= scope.lookupvar('stomp_user') %>
-plugin.activemq.pool.1.password = <%= scope.lookupvar('stomp_password') %>
+plugin.activemq.pool.1.host = <%= @stomp_host %>
+plugin.activemq.pool.1.port = <%= @stomp_port %>
+plugin.activemq.pool.1.user = <%= @stomp_user %>
+plugin.activemq.pool.1.password = <%= @stomp_password %>
 
 # Facts
 factsource = yaml
@@ -30,20 +30,20 @@ plugin.yaml = /etc/mcollective/facts.yaml
 registerinterval = 300
 registration = Agentlist
 
-<% if scope.lookupvar('audit_provider') != '' -%>
+<% if @audit_provider -%>
 # Audit
 rpcaudit = 1
-rpcauditprovider = <%= scope.lookupvar('audit_provider') %>
-<% if scope.lookupvar('audit_logfile') != '' -%>
-plugin.<%= scope.lookupvar('audit_provider').to_s.downcase %>.logfile = <%= scope.lookupvar('audit_logfile') %>
+rpcauditprovider = <%= @audit_provider %>
+<% if @audit_logfile -%>
+plugin.<%= @audit_provider.to_s.downcase %>.logfile = <%= @audit_logfile %>
 <% end -%>
 <% end -%>
 
 # Puppet plugin whitelist
-plugin.puppet.resource_allow_managed_resources = <%= scope.lookupvar('resource_allow_managed_resources') %>
-<% if scope.lookupvar('resource_type_whitelist') && scope.lookupvar('resource_type_whitelist') != '' -%>
-plugin.puppet.resource_type_whitelist = <%= scope.lookupvar('resource_type_whitelist') %>
+plugin.puppet.resource_allow_managed_resources = <%= @resource_allow_managed_resources %>
+<% if @resource_type_whitelist -%>
+plugin.puppet.resource_type_whitelist = <%= @resource_type_whitelist %>
 <% end -%>
-<% if scope.lookupvar('resource_type_blacklist') && scope.lookupvar('resource_type_blacklist') != '' -%>
-plugin.puppet.resource_type_blacklist = <%= scope.lookupvar('resource_type_blacklist') %>
+<% if @resource_type_blacklist -%>
+plugin.puppet.resource_type_blacklist = <%= @resource_type_blacklist %>
 <% end -%>
