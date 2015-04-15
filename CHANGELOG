@@ -1,3 +1,5 @@
+20140415 v1.8.0
+  Update facts.yml for newer versions of ruby and facter
   Remove dependency on evenup/ruby, evenup/facter, evenup/logrotate, evenup/common
 20140205 v1.7.1
   Set client logfile group
