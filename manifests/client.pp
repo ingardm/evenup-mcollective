@@ -27,7 +27,7 @@ class mcollective::client (
   $stomp_user     = $::mcollective::stomp_user,
   $stomp_password = $::mcollective::stomp_password,
   $stomp_port     = $::mcollective::stomp_port,
-  $psk            = $::mcollective::stomp_psk,
+  $psk            = $::mcollective::psk,
   $client_group   = $::mcollective::client_group,
   $plugin_config  = $::mcollective::client_plugin_config,
 ) {

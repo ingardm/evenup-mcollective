@@ -17,7 +17,7 @@ class mcollective::server (
   $stomp_user     = $::mcollective::stomp_user,
   $stomp_password = $::mcollective::stomp_password,
   $stomp_port     = $::mcollective::stomp_port,
-  $psk            = $::mcollective::stomp_psk,
+  $psk            = $::mcollective::psk,
   $plugin_config  = $::mcollective::server_plugin_config,
 ) {
 
