@@ -5,17 +5,18 @@ libdir = /opt/puppetlabs/mcollective/plugins:/usr/libexec/mcollective
 logfile = /var/log/puppetlabs/mcollective/mcollective-client.log
 loglevel = info
 
+<% if @psk -%>
 # Plugins
 securityprovider = psk
-plugin.psk = <%= scope.lookupvar('psk') %>
-direct_addressing = 1
+plugin.psk = <%= @psk %>
+<% end -%>
 
 connector = activemq
 plugin.activemq.pool.size = 1
-plugin.activemq.pool.1.host = <%= scope.lookupvar('stomp_host') %>
-plugin.activemq.pool.1.port = <%= scope.lookupvar('stomp_port') %>
-plugin.activemq.pool.1.user = <%= scope.lookupvar('stomp_user') %>
-plugin.activemq.pool.1.password = <%= scope.lookupvar('stomp_password') %>
+plugin.activemq.pool.1.host = <%= @stomp_host %>
+plugin.activemq.pool.1.port = <%= @stomp_port %>
+plugin.activemq.pool.1.user = <%= @stomp_user %>
+plugin.activemq.pool.1.password = <%= @stomp_password %>
 
 # Facts
 factsource = yaml

@@ -3,15 +3,6 @@
 # This class manages the mcollective server service
 #
 #
-# === Parameters
-#
-# See the init.pp for parameter information.  This class should not be direclty called.
-#
-#
-# === Authors
-#
-# * Justin Lambert <mailto:jlambert@letsevenup.com>
-#
 class mcollective::server (
   $stomp_host     = $::mcollective::stomp_host,
   $stomp_user     = $::mcollective::stomp_user,
