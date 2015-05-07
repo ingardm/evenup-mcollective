@@ -22,42 +22,37 @@
 #   include mcollective::client
 #
 class mcollective::client (
-  $stomp_host     = 'localhost',
-  $stomp_user     = 'mcollective',
-  $stomp_password = 'password',
-  $psk            = 'changeme',
-  $stomp_port     = 61613,
-  $client_logfile = '/var/log/mcollective-client.log',
-  $client_group   = 'root',
-  $packages       = [],
+  $client         = $::mcollective::client,
+  $stomp_host     = $::mcollective::stomp_host,
+  $stomp_user     = $::mcollective::stomp_user,
+  $stomp_password = $::mcollective::stomp_password,
+  $stomp_port     = $::mcollective::stomp_port,
+  $psk            = $::mcollective::stomp_psk,
+  $client_group   = $::mcollective::client_group,
+  $plugin_config  = $::mcollective::client_plugin_config,
 ) {
 
-  package { 'mcollective-client':
-    ensure => 'latest',
+  if $client {
+    $ensure = 'file'
+  } else {
+    $ensure = 'absent'
   }
 
-  file { '/etc/mcollective/client.cfg':
-    ensure  => file,
+  file { '/etc/puppetlabs/mcollective/client.cfg':
+    ensure  => $ensure,
     mode    => '0440',
     owner   => root,
     group   => $client_group,
-    require => Package['mcollective-client'],
     content => template('mcollective/client/client.cfg.erb'),
   }
 
-  file { $client_logfile:
-    owner => root,
-    group => $client_group,
-    mode  => '0660',
+  if $client {
+    file { '/var/log/puppetlabs/mcollective/mcollective-client.log':
+      ensure => 'file',
+      owner  => root,
+      group  => $client_group,
+      mode   => '0660',
+    }
   }
 
-  file { '/etc/bash_completion.d/mco.sh':
-    owner  => root,
-    group  => root,
-    source => 'puppet:///modules/mcollective/mco.sh',
-  }
-
-  package { $packages:
-    ensure => latest,
-  }
 }

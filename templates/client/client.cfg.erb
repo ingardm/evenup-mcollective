@@ -1,10 +1,8 @@
 # Fine managed by puppet - do not modify
 
-topicprefix = /topic/
-main_collective = mcollective
 collectives = mcollective
-libdir = /usr/libexec/mcollective
-logfile = <%= scope.lookupvar('client_logfile') %>
+libdir = /opt/puppetlabs/mcollective/plugins:/usr/libexec/mcollective
+logfile = /var/log/puppetlabs/mcollective/mcollective-client.log
 loglevel = info
 
 # Plugins
@@ -22,3 +20,13 @@ plugin.activemq.pool.1.password = <%= scope.lookupvar('stomp_password') %>
 # Facts
 factsource = yaml
 plugin.yaml = /etc/mcollective/facts.yaml
+
+connection_timeout = 3
+
+<% if @plugin_config -%>
+<%   @plugin_config.each do |plugin, property| -%>
+<%     property.each do |k,v| -%>
+plugin.<%= plugin %>.<%= k %> = <%= v %>
+<%     end -%>
+<%   end -%>
+<% end -%>

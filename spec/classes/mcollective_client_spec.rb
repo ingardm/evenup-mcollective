@@ -1,25 +1,23 @@
 require 'spec_helper'
 
-describe 'mcollective::client', :type => :class do
-  let(:params) { { :packages => [ 'mcollective-filemgr-client', 'mcollective-puppet-client'] } }
+describe 'mcollective', :type => :class do
 
   context 'default' do
-    it { should create_class('mcollective::client') }
-    it { should contain_package('mcollective-client') }
-    it { should contain_file('/etc/mcollective/client.cfg').with(
-      'ensure'  => 'file',
-      'mode'    => '0440',
-      'owner'   => 'root',
-      'group'   => 'root' ) }
-    it { should contain_file('/etc/bash_completion.d/mco.sh') }
-    it { should contain_package('mcollective-filemgr-client') }
-    it { should contain_package('mcollective-puppet-client') }
+    it { should contain_file('/etc/puppetlabs/mcollective/client.cfg').with(:ensure => 'absent') }
+    it { should_not contain_file('/var/log/puppetlabs/mcollective/mcollective-client.log') }
   end
 
-  context '#client_group' do
-    let(:params) { { :client_group => 'mcollective' } }
-    it { should contain_file('/etc/mcollective/client.cfg').with(:group => 'mcollective' ) }
-    it { should contain_file('/var/log/mcollective-client.log').with(:group => 'mcollective' ) }
+  context 'with client' do
+    let(:params) { { :client => true } }
+    it { should contain_file('/etc/puppetlabs/mcollective/client.cfg').with( :group => 'root' ) }
+    it { should contain_file('/var/log/puppetlabs/mcollective/mcollective-client.log').with( :group => 'root' ) }
+
+    context 'with client_group' do
+      let(:params) { { :client => true, :client_group => 'mcollective' } }
+      it { should contain_file('/etc/puppetlabs/mcollective/client.cfg').with( :group => 'mcollective' ) }
+      it { should contain_file('/var/log/puppetlabs/mcollective/mcollective-client.log').with( :group => 'mcollective' ) }
+    end
+
   end
 
 end

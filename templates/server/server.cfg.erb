@@ -1,19 +1,20 @@
-# Fine managed by puppet - do not modify
+# Managed by puppet - do not modify
 
-topicprefix = /topic/
 main_collective = mcollective
 collectives = mcollective
-logfile = /var/log/mcollective.log
-libdir = /usr/libexec/mcollective
+libdir = /opt/puppetlabs/mcollective/plugins:/usr/libexec/mcollective
+logfile = /var/log/puppetlabs/mcollective/mcollective.log
 loglevel = info
 daemonize = 1
-registerinterval = 120
-classesfile = <%= @classes_file %>
+
+# Registration
+registerinterval = 600
+registration_splay = true
+registration = agentlist
 
 # Plugins
 securityprovider = psk
 plugin.psk = <%= @psk %>
-direct_addressing = 1
 
 connector = activemq
 plugin.activemq.pool.size = 1
@@ -21,29 +22,18 @@ plugin.activemq.pool.1.host = <%= @stomp_host %>
 plugin.activemq.pool.1.port = <%= @stomp_port %>
 plugin.activemq.pool.1.user = <%= @stomp_user %>
 plugin.activemq.pool.1.password = <%= @stomp_password %>
+plugin.activemq.heartbeat_interval = 120
 
 # Facts
+classesfile = /opt/puppetlabs/puppet/cache/state/classes.txt
 factsource = yaml
-plugin.yaml = /etc/mcollective/facts.yaml
+plugin.yaml = /etc/puppetlabs/mcollective/facts.yaml
+fact_cache_time = 300
 
-# Registration (can be used for keepalive)
-registerinterval = 300
-registration = Agentlist
-
-<% if @audit_provider -%>
-# Audit
-rpcaudit = 1
-rpcauditprovider = <%= @audit_provider %>
-<% if @audit_logfile -%>
-plugin.<%= @audit_provider.to_s.downcase %>.logfile = <%= @audit_logfile %>
-<% end -%>
-<% end -%>
-
-# Puppet plugin whitelist
-plugin.puppet.resource_allow_managed_resources = <%= @resource_allow_managed_resources %>
-<% if @resource_type_whitelist -%>
-plugin.puppet.resource_type_whitelist = <%= @resource_type_whitelist %>
-<% end -%>
-<% if @resource_type_blacklist -%>
-plugin.puppet.resource_type_blacklist = <%= @resource_type_blacklist %>
+<% if @plugin_config -%>
+<%   @plugin_config.each do |plugin, property| -%>
+<%     property.each do |k,v| -%>
+plugin.<%= plugin %>.<%= k %> = <%= v %>
+<%     end -%>
+<%   end -%>
 <% end -%>
