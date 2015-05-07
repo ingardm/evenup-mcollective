@@ -1,3 +1,8 @@
+# == Class: mcollective::install
+#
+# This class installs packages and creates directories
+#
+#
 class mcollective::install (
   $client          = $::mcollective::client,
   $client_packages = $::mcollective::client_packages,

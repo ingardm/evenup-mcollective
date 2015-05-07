@@ -1,59 +1,156 @@
-What is it?
-===========
+#### Table of Contents
 
-Puppet module to configure mcollective using ActiveMQ including auditing and
-audit logging with beaver.
+1. [Overview](#overview)
+2. [Module Description - What the module does and why it is useful](#module-description)
+3. [Setup - The basics of getting started with mcollective](#setup)
+    * [What mcollective affects](#what-mcollective-affects)
+    * [Beginning with mcollective](#beginning-with-mcollective)
+4. [Usage - Configuration options and additional functionality](#usage)
+    * [Agent Configuration](#agent-configuration)
+    * [Server Configuration](#server-configuration)
+5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+6. [Limitations - OS compatibility, etc.](#limitations)
+7. [TODO](#todo)
+8. [Development - Guide for contributing to the module](#development)
+9. [Changelog/Contributors](#changelog-contributors)
 
-Released under the Apache 2.0 licence
+## Overview
 
-Usage:
-------
+A puppet module to manage the configuration of mcollective when installed as part of the puppet 4 AIO installation.
 
-To install:
-<pre>
+## Module Description
+
+This module configures the server component and optionally the client configuration.
+
+Requirements for this module is puppet >= 4.0 with the AIO installer.  The [evenup/puppet](forge.puppetlabs.com/evenup/puppet)
+is one module that can meet this need.  Mcollective also requiers an working ActiveMQ
+(or RabbitMQ - not supported by this module at this time) setup
+
+## Setup
+
+### What puppet affects
+
+* /etc/puppetlabs/mcollective/server.cfg
+* mcollective service
+* /etc/puppetlabs/mcollective/client.cfg (optional)
+* client and agent packages (optional)
+
+### Beginning with mcollective
+
+This module can be installed with
+
+```
+  puppet module install evenup-mcollective
+```
+
+## Usage
+
+Installing the server component:
+
+```puppet
   class { 'mcollective':
-    stomp_host      => 'stomp',
-    stomp_user      => 'mcollective',
-    stomp_password  => 'mcollective',
-    psk             => 'mySecretPSK'
+    stomp_host     => 'activemq.company.com',
+    stomp_user     => 'mcollective',
+    stomp_password => 'secretpass',
   }
-</pre>
+```
 
-Server and client side agents are installed by specifying the server_packages
-and client_packages parameter:
-<pre>
+Adding the client to a node and accessible to users in the `mco-users` group:
+
+```puppet
   class { 'mcollective':
-    ...
-    server_packages => ['mcollective-puppet-agent', 'mcollective-filemgr-agent'],
-    client_packages => ['mcollective-puppet-client', 'mcollective-service-client'],
+    stomp_host     => 'activemq.company.com',
+    stomp_user     => 'mcollective',
+    stomp_password => 'secretpass',
+    client         => true,
+    client_group   => 'mco-users',
   }
-</pre>
+```
+
+###Parameters
+
+#### Agent Configuration
+
+#####`stomp_host`
+String.  Hostname (or IP) of the ActiveMQ server
+
+Default: localhost
+
+#####`stomp_user`
+String.  Username to connect to stomp server as
+
+Default: mcollective
+
+#####`stomp_password`
+String.  Password for stomp_user
+
+Default: password
+
+#####`stomp_port`
+Integer.  ActiveMQ port
+
+Default: 61613
+
+#####`psk`
+String.  Pre-shared key for encryptoin
+
+Default: undef
+
+#####`client`
+Boolean.  Whether or not the client should be configured
+
+Default: false
+
+#####`server_packages`
+Array[String].  List of packages to be installed with the server role
+
+Default: []
+
+#####`client_packages`
+Array[String].  List of packages to be installed with the client role
+
+Default: []
+
+#####`client_group`
+String.  Group that owns the client configuration.  This allows keeping the configuration
+secure from users who don't need it, but allows for non-root mco access
 
 
-You can enable audit logging by specifying the audit_provider parameter.  If
-you need to include a package for it as well you can specify audit_package.
-<pre>
-  class { 'mcollective':
-    stomp_host      => 'stomp',
-    stomp_user      => 'mcollective',
-    stomp_password  => 'mcollective',
-    psk             => 'mySecretPSK',
-    audit_provider  => 'Logstash',
-    audit_package   => 'mcollective-logstash-audit',
-    audit_logfile   => '/var/log/mcollective/audit.json',
-  }
-</pre>
+## Reference
 
-TODO:
-____
-- [x] Move installed plugins outside of module
-- [x] Parameters for auditing
-- [x] Allow enable/disable log shipping (beaver right now)
+### Classes
 
-Contribute:
------------
-* Fork it
-* Create a topic branch
-* Improve/fix (with spec tests)
-* Push new topic branch
-* Submit a PR
+#### Public Classes
+
+* `mcollective`: Entry point for configuring the module
+
+#### Private Classes
+
+* `mcollective::install`: Installs packages defined in server_packages and client_packages, create paths
+* `mcollective::server`: Configures the server role
+* `mcollective::client`: Configures the client role
+* `mcollective::service`: Manages the mcollective service
+
+## Limitations
+
+### General
+
+This module currently does not have acceptnace tests and is tested on CentOS 6 and 7.  It *should* work on
+Ubuntu machines without issue.
+
+## TODO
+
+[ ] Add acceptance tests
+[ ] Allow RabbitMQ config
+[ ] Allow SSL config
+
+## Development
+
+Improvements and bug fixes are greatly appreciated.  See the [contributing guide](https://github.com/evenup/evenup-mcollective/CONTRIBUTING.md) for
+information on adding and validating tests for PRs.
+
+## Changelog / Contributors
+
+[Changelog](https://github.com/evenup/evenup-mcollective/blob/master/CHANGELOG)
+
+[Contributors](https://github.com/evenup/evenup-mcollective/graphs/contributors)
