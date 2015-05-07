@@ -15,8 +15,8 @@ class mcollective::server (
   file { '/etc/puppetlabs/mcollective/server.cfg':
     ensure  => 'file',
     mode    => '0440',
-    owner   => 'puppet',
-    group   => 'puppet',
+    owner   => 'root',
+    group   => 'root',
     content => template('mcollective/server/server.cfg.erb'),
     notify  => Service['mcollective'],
   }
