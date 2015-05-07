@@ -81,65 +81,22 @@
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
 class mcollective(
-  $stomp_host                       = 'localhost',
-  $stomp_user                       = 'mcollective',
-  $stomp_password                   = 'password',
-  $stomp_port                       = 61613,
-  $psk                              = 'changeme',
-  $client                           = false,
-  $enabled                          = true,
-  $server_packages                  = [],
-  $client_packages                  = [],
-  $classes_file                     = '/var/lib/puppet/classes.txt',
-  $client_logfile                   = '/var/log/mcollective-client.log',
-  $client_group                     = 'root',
-  $configfile_client                = '/etc/mcollective/client.cfg',
-  $audit_provider                   = undef,
-  $audit_logfile                    = undef,
-  $audit_package                    = undef,
-  $resource_allow_managed_resources = false,
-  $resource_type_whitelist          = undef,
-  $resource_type_blacklist          = undef,
-  $beaver                           = false,
-){
+  String                                       $stomp_host           = 'localhost',
+  String                                       $stomp_user           = 'mcollective',
+  String                                       $stomp_password       = 'password',
+  Integer                                      $stomp_port           = 61613,
+  String                                       $psk                  = 'changeme',
+  Boolean                                      $client               = false,
+  Array[String]                                $server_packages      = [],
+  Array[String]                                $client_packages      = [],
+  Optional[Hash[String, Hash[String, Scalar]]] $server_plugin_config = undef,
+  Optional[Hash[String, Hash[String, Scalar]]] $client_plugin_config = undef,
+  String                                       $client_group         = 'root',
+  ){
 
-  case $enabled {
-    true: {
-      $real_enabled = true
-    }
-    default: {
-      $real_enabled = false
-    }
-  }
+  class { '::mcollective::install': require => Package['puppet-agent'] } ->
+  class { '::mcollective::server': } ->
+  class { '::mcollective::service': }
+  class { '::mcollective::client': }
 
-  class { '::mcollective::server':
-    enabled                          => $real_enabled,
-    stomp_host                       => $stomp_host,
-    stomp_port                       => $stomp_port,
-    stomp_user                       => $stomp_user,
-    stomp_password                   => $stomp_password,
-    psk                              => $psk,
-    classes_file                     => $classes_file,
-    packages                         => $server_packages,
-    audit_package                    => $audit_package,
-    audit_provider                   => $audit_provider,
-    audit_logfile                    => $audit_logfile,
-    resource_allow_managed_resources => $resource_allow_managed_resources,
-    resource_type_whitelist          => $resource_type_whitelist,
-    resource_type_blacklist          => $resource_type_blacklist,
-    beaver                           => $beaver,
-  }
-
-  if $client {
-    class { '::mcollective::client':
-      stomp_host     => $stomp_host,
-      stomp_port     => $stomp_port,
-      stomp_user     => $stomp_user,
-      stomp_password => $stomp_password,
-      psk            => $psk,
-      client_logfile => $client_logfile,
-      client_group   => $client_group,
-      packages       => $client_packages,
-    }
-  }
 }

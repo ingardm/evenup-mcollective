@@ -13,84 +13,28 @@
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
 class mcollective::server (
-  $stomp_host                       = 'localhost',
-  $stomp_user                       = 'mcollective',
-  $stomp_password                   = 'password',
-  $stomp_port                       = 61613,
-  $psk                              = 'changeme',
-  $enabled                          = true,
-  $classes_file                     = '/var/lib/puppet/classes.txt',
-  $packages                         = [],
-  $audit_package                    = undef,
-  $audit_provider                   = undef,
-  $audit_logfile                    = undef,
-  $resource_allow_managed_resources = false,
-  $resource_type_whitelist          = undef,
-  $resource_type_blacklist          = undef,
-  $beaver                           = false,
+  $stomp_host     = $::mcollective::stomp_host,
+  $stomp_user     = $::mcollective::stomp_user,
+  $stomp_password = $::mcollective::stomp_password,
+  $stomp_port     = $::mcollective::stomp_port,
+  $psk            = $::mcollective::stomp_psk,
+  $plugin_config  = $::mcollective::server_plugin_config,
 ) {
 
-  if $resource_type_whitelist and $resource_type_blacklist {
-    fail('Cannot set resource_type_whitelist and resource_type_blacklist')
-  }
-
-  case $enabled {
-    true:     {
-      $running  = 'running'
-      $present  = 'file'
-    }
-    default:  {
-      $running  = 'stopped'
-      $present  = 'absent'
-    }
-  }
-
-  # Set up mcollective
-  Package { notify => Service['mcollective'], ensure => 'latest' }
-
-  package { ['mcollective', 'rubygem-stomp']: }
-
-  package { $packages: }
-
-  if $audit_package {
-    package { $audit_package: }
-  }
-
-  file { '/etc/mcollective/server.cfg':
-    ensure  => $present,
+  file { '/etc/puppetlabs/mcollective/server.cfg':
+    ensure  => 'file',
     mode    => '0440',
-    owner   => 'root',
-    group   => 'root',
-    require => Package['mcollective'],
-    content => template('mcollective/server/server.cfg.erb');
+    owner   => 'puppet',
+    group   => 'puppet',
+    content => template('mcollective/server/server.cfg.erb'),
+    notify  => Service['mcollective'],
   }
 
-  service { 'mcollective':
-    ensure    => $running,
-    enable    => $enabled,
-    require   => Package['mcollective'],
-    subscribe => File['/etc/mcollective/server.cfg'];
-  }
-
-
-  # Make sure the provisioner agent is removed
-  file { '/usr/libexec/mcollective/mcollective/agent/provision.rb': ensure => 'absent', notify => Service['mcollective'] }
-
-  file { '/etc/mcollective/facts.yaml':
+  file { '/etc/puppetlabs/mcollective/facts.yaml':
     owner   => 'root',
     group   => 'root',
     mode    => '0400',
     content => template('mcollective/server/facts.yaml.erb'),
-    require => Package['mcollective'];
   }
 
-  if $audit_logfile {
-    if $beaver == true {
-      beaver::stanza { $audit_logfile:
-        type   => 'mcollective-audit',
-        tags   => [$::disposition],
-        format => 'rawjson',
-      }
-    }
-  }
 }
