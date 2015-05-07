@@ -12,14 +12,14 @@ class mcollective::install (
   # Plugins directory is not created by the puppet-agent 1.0.1 installer, create
   file { [ '/opt/puppetlabs/mcollective', '/opt/puppetlabs/mcollective/plugins' ]:
     ensure => 'directory',
-    owner  => 'puppet',
-    group  => 'puppet',
+    owner  => 'root',
+    group  => 'root',
   }
 
   file { '/var/log/puppetlabs/mcollective':
     ensure => 'directory',
-    owner  => 'puppet',
-    group  => 'puppet',
+    owner  => 'root',
+    group  => 'root',
   }
 
   package { $server_packages:
