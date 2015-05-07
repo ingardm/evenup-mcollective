@@ -1,4 +1,3 @@
----
 <%=
 mco_facts = scope.to_hash.reject do |k,v|
         k.to_s =~ /(uptime.*|memoryfree.*|swapfree.*|ec2_iam.*|ec2_metadata|system_uptime|_timestamp|facts|path|sshfp_.*)/
