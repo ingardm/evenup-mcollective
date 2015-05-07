@@ -12,9 +12,11 @@ registerinterval = 600
 registration_splay = true
 registration = agentlist
 
+<% if @psk -%>
 # Plugins
 securityprovider = psk
 plugin.psk = <%= @psk %>
+<% end -%>
 
 connector = activemq
 plugin.activemq.pool.size = 1
