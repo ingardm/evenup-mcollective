@@ -1,6 +1,6 @@
 <%=
 mco_facts = scope.to_hash.reject do |k,v|
-        k.to_s =~ /(uptime.*|memoryfree.*|swapfree.*|ec2_iam.*|ec2_metadata|system_uptime|_timestamp|facts|path|sshfp_.*|load_averages.*|memory.*.available*|memory.*.used*)/
+        k.to_s =~ /(uptime.*|memoryfree.*|swapfree.*|ec2_iam.*|ec2_metadata|system_uptime|_timestamp|facts|path|sshfp_.*|load_averages.*|memory.swap.available*|memory.swap.used*|memory.system.available*|memory.system.used*)/
 end
 mco_facts.to_yaml
 -%>
